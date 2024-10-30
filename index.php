@@ -624,7 +624,7 @@
         <label> Monthly Rent Payment : $ </label>
         <input type="number" id="rent_payment" placeholder="Monthly Rent Payment">
         <p></p>
-        <label> After-tax Investment Return : $ </label>
+        <label> After-tax Investment Return (%) : </label>
         <input type="number" id="investment_return" placeholder="After-tax Investment Return">
         <p></p>
         <!-- <label> Income Tax Rate (%) : </label>
@@ -763,6 +763,56 @@
                     home_over_time[i] = purchase_price * Math.pow((1 + home_appreciation/100), i);
                 }
 
+
+                // RENT
+                total_expense_rent = [];
+
+                for(let i = 0; i <  10; i++)
+                {
+                    total_expense_rent[i] = -((monthly_rent * Math.pow((1 + inflation_rate/100), i)) * 12) + (investment_return/100 * down_payment);
+                }
+
+                net_worth_rent = [];
+                for(let i = 0; i < 10; i++)
+                {
+                    net_worth_rent[i] =  down_payment + (total_expense_rent[i]);
+                }
+
+
+
+
+
+                // BUY:
+                total_expense_buy = [];
+                purchase = purchase_price;
+
+                for(let j = 0; j < 10; j++)
+                {
+                    total_expense_buy[j] = (home_appreciation/100 * purchase) - (interest_rate/100 * (purchase - down_payment)) - (property_tax_rate/100 * purchase) - (home_insurance/100 * purchase) -  maintainance_fee;
+                    purchase =  purchase * Math.pow((1 + home_appreciation/100), j);
+                }
+
+                net_worth_buy = [];
+                for(let j = 0; j < 10; j++)
+                {
+                    net_worth_buy[j] =  down_payment + (total_expense_buy[j]);
+                }
+
+                
+                console.log(net_worth_buy);
+                console.log(net_worth_rent);
+
+
+
+
+
+
+
+
+
+
+
+
                 // console.log(rent_over_time);
                 // console.log(home_over_time);
                 
@@ -784,16 +834,16 @@
                         labels: labels,
                         datasets: [
                             {
-                                label: 'Rent Over Time',
-                                data: rent_over_time,
+                                label: 'Networth - Rent',
+                                data: net_worth_rent,
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 fill: false,
                                 tension: 0.1
                             },
                             {
-                                label: 'Home Value Over Time',
-                                data: home_over_time,
+                                label: 'Networth - Buy',
+                                data: net_worth_buy,
                                 borderColor: 'rgba(153, 102, 255, 1)',
                                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
                                 fill: false,
@@ -813,7 +863,7 @@
                             y: {
                                 title: {
                                     display: true,
-                                    text: 'Amount ($)'
+                                    text: 'Networth Amount ($)'
                                 },
                                 beginAtZero: true
                             }
@@ -960,15 +1010,7 @@
                     }
                 });
 
-
-
-
-
-
             }
-
-
-
 
         </script>
 
